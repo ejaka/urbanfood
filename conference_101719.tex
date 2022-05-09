@@ -1,0 +1,99 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Communication in Distributed System \\
+{\footnotesize  Simulation and short paper}
+\thanks{}
+}
+
+\author{\IEEEauthorblockN{Godfrey Akuba Ojimah}
+\IEEEauthorblockA{\textit{Communication Systems and Networks (MSc)} \\
+\textit{Technische Hochschule}\\
+Köln, Germany \\
+Godfrey\_ojimah.akuba@smail.th-koeln.de}
+
+}
+
+\maketitle
+
+
+\section{Introduction}
+A wireless communication allows for the transmission of a signal or a specific amount of data from one point to another (transmitter and receiver) without the use of a guided medium. To transmit data, a wireless channel employs a specific frequency band.
+
+\section{Motivation}
+The design and implementation of the propagation loss model is an important part of any network simulation that models wireless networks. The propagation loss model is employed in this study.
+The propagation loss model is used to determine the intensity of the wireless signal at a receivers node. There are a variety of techniques to model this phenomenon, and these differ in terms of computing complexity as well as the amount of data they contain if a single transmitter is transmitting a single packet.
+The goal of the paper is to see how these different models influence the outcome of a WiFi in ns-3 simulation.We conducted a thorough examination of these models, comparing their overall performance in terms of throughput and signal strength as well as the measured performance of the simulated wireless network.
+The selection of the Propagation Loss Model to be used to model the performance of a wireless network channel or set of channels is an important part of any wireless network simulation. These models are required for the simulator to compute the signal strength of a wireless transmission at the receiving stations, which is then used to determine whether or not each of the potential receivers can receive the information without bit errors.
+
+
+\section{Methodology}
+I implemented two WiFi nodes of Wireless Channel 802.11n standard in NS-3 is modeled by the class YansWifiChannel which works together with WifiPhy class. WifiChannel includes the helper class YansWifiChannelHelper. By means of the latter, we can configure predefined channels with propagation and delay models. The WiFi card was fixed to 10dBm and assume a omnidirectional antenna with 1dBi on each nodes. I also used  UDP for the upper layer to generate artificial UDP traffic with an application layer packet size of 1450 Bytes and data-rate of 75Mbps. Since I will be using ns-3 IEEE802.11n standard operating in the 5GHz band, The WifiPhy channel center frequency is set by the attribute frequency in the class WifiPhy and the WifiPhy channel width is set by the attribute ChannelWidth in the class WifiPhy. It is expressed in units of MHz and was set to 80MHz.
+
+
+\subsection{Propagation Models to Investigate}
+\begin{itemize}
+\item Friis propagation Loss Model: It is possible to predict the power level that will be received in ideal conditions by considering some distance. That is, there should be no obstacles of any kind near the link that could interfere with electromagnetic propagation.
+\item Fixed Rss Loss Model: It establishes a constant (configurable) reception power level that is independent of transmission power. The receive power is fixed to a predefined value regardless of distance.
+\item Three log Distance Propagation Loss Model: The log distance model in a different form. For different distance intervals (close, in the middle and far), it applies different factors to the logarithmic path loss.
+\item Two Ray Ground Propagation Loss Model: It assumes two paths for radio propagation: one ray is received directly and the other reflects on the ground. Because of the oscillations caused by the constructive and destructive combination of the two rays, this model does not produce good results over short distances
+\item Nakagami Propagation Loss Model: It employs the fast fading Nakagami model, which explains signal strength variations caused by multipath fading. The model does not account for signal path loss due to distance traveled. Nakagami-m only provides the fast fading effect, which varies the reception power based on a Nakagami distribution
+\end{itemize}
+
+
+
+\section{Results}
+Firstly, I created a ns–3 scenario using a simple wireless Adhoc network, which allows us to compare network efficiency with the use of flow monitor class in ns-3 (total packets received at destinations divided by total packets sent by sources). IEEE 802.11n wireless Adhoc nodes are placed on a 2m region on the first  preliminary simulation experiments. The reason for the experiment was to be sure of how long the simulation needs to run before it can produce reliable results. So i picked Two Ray Propagation loss model for the test and observe the throughput, As you can see in the figure below the throughput started quite low at in initial runtime of 10 sec and then gradually spiked up to after gradually increasing till it gets to 170 seconds.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=.5\textwidth]{prem.jpeg}}
+\caption{Preliminary run-time Experiment}
+\label{fig}
+\end{figure}
+
+For the signal strength experiment I observed that signal strength varies for the different propagation model as Friis, Threelog and TwoRay propagation started very good at close distance and became very weak at a larger distance. But fixed and nakagami propagation was on a constant  frequency despite the distance change and nakagami having a high signal strength. Below is the graph for the experiment.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=.5\textwidth]{sign.jpeg}}
+\caption{Signal strength Experiment}
+\label{fig}
+\end{figure}
+For the throughput experiment, I observed also similar results with the signal strength experiment. The throughput started very high for Friiis, Threelog and Tworay propagation and went low after a very increasing the distance. But as for Fixed and Nakagami propagation, the throughput was constant all through but Nakagami propagation also maintain a very high throughput compared to Fixed propagation. Below is the graph for the experiment.
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=.5\textwidth]{UDP.jpeg}}
+\caption{UDP throughput Experiment}
+\label{fig}
+\end{figure}
+
+\section{Summary}
+This experiment compares the overall performance in terms of computational ability as well as the measured performance of the wireless network being simulated. They concentrate on the relative computational complexity of each model (in terms of throughput and signal strength) and report on the variations in measured results that we observed and by comparing the results in fig 2 and fig 3 ,it has been found that Nakagami maintained a very high constant throughput and signal strength at 200m even when other propagation loss model were already dropping to zero throughput or very low signals  at 5 GHz on ns-3 simulator version 3.30.1
+Finally, when designing a wireless communication network, finding an accurate propagation model for propagation losses is an important issue.
+
+Wireless communications have advanced rapidly in recent years, resulting in mobile phones becoming an essential part of people's lives. As a result, demand for mobile wireless communications companies' services has increased. Wireless network planners
+are looking to improve connectivity between different points. So i believe there will be more experiment on 5GHz to test the various propagation model for  better connectivity before moving to newer band frequencies.
+
+
+
+
+
+\begin{thebibliography}{00}
+\bibitem{b1} Lesly Maygua-Marcillo1, Luis Urquiza-Aguiar1, Martha Paredes-Paredes1 ``Wireless Channel 802.11 in NS-3.
+\bibitem{b2} JPropagation Loss Models NS-3 (2016), [Online]. Available:https://www.nsnam.org/docs/models/html/
+propagation.html.
+\bibitem{b3} Mirko Stoffers and George Riley, ``Comparing the ns–3 Propagation Models``.
+\bibitem{b4} Nakagami propagation (2017), [Online]. 
+
+\end{thebibliography}
+
+
+\end{document}
