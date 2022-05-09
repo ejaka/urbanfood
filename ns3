@@ -1,0 +1,58 @@
+
+#!/bin/bash
+echo "Installing python 2.7.15"
+sudo apt-get update
+sudo apt-get install build-essential checkinstall
+sudo apt-get install libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
+cd /usr/src
+sudo wget https://www.python.org/ftp/python/2.7.15/Python-2.7.15.tgz
+sudo tar xzf Python-2.7.15.tgz
+cd Python-2.7.15
+sudo ./configure --enable-optimizations
+sudo make altinstall
+python2.7 -V
+# install g++>4.9
+echo "Installing g++ 4.9"
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+sudo apt-get update -y
+sudo apt-get install gcc-4.9 g++-4.9 -y
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9 -y
+sudo apt-get install gcc-4.8 g++-4.8 -y
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
+sudo update-alternatives --config gcc
+
+# installing dependencies of ns-3
+echo "Installing dependencies of ns-3"
+sudo apt-get install gcc g++ python python-dev -y
+sudo apt-get install mercurial python-setuptools git -y 
+sudo apt-get install qt5-default -y
+sudo apt-get install python-pygraphviz python-kiwi python-pygoocanvas libgoocanvas-dev ipython -y
+sudo apt-get install openmpi-bin openmpi-common openmpi-doc libopenmpi-dev -y
+sudo apt-get install autoconf cvs bzr unrar -y
+sudo apt-get install gdb valgrind -y
+sudo apt-get install uncrustify -y
+sudo apt-get install doxygen graphviz imagemagick -y 
+sudo apt-get install texlive texlive-extra-utils texlive-latex-extra texlive-font-utils texlive-lang-portuguese dvipng latexmk -y 
+sudo apt-get install python-sphinx dia -y
+sphinx-build 
+sudo apt-get install gsl-bin libgsl2 libgsl-dev -y 
+sudo apt-get install flex bison libfl-dev -y
+sudo apt-get install tcpdump -y
+sudo apt-get install sqlite sqlite3 libsqlite3-dev -y
+sudo apt-get install libxml2 libxml2-dev -y
+sudo apt-get install cmake libc6-dev libc6-dev-i386 libclang-6.0-dev llvm-6.0-dev automake -y 
+sudo pip install cxxfilt -y
+sudo apt-get install libgtk2.0-0 libgtk2.0-dev -y
+sudo apt-get install vtun lxc -y
+sudo apt-get install libboost-signals-dev libboost-filesystem-dev -y 
+echo "Installing NS 3"
+cd
+mkdir workspace
+cd workspace
+git clone https://gitlab.com/nsnam/ns-3-allinone.git
+cd ns-3-allinone
+python download.py
+python download.py -n ns-3.29
+./build.py --enable-examples --enable-tests
+./test.py
+./waf --run hello-simulator
